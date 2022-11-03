@@ -54,7 +54,14 @@ const Dashboard = ({ id, fullheight = false, superset }: DashboardProps) => {
     })();
   }, [ref.current, id, fullheight]);
 
-  return <div className={"superset-dashboard"} ref={ref} />;
+  return (
+    <div
+      className={`superset-dashboard ${
+        fullheight ? "superset-dashboard-fullheight" : ""
+      }`}
+      ref={ref}
+    />
+  );
 };
 
 export default Dashboard;
