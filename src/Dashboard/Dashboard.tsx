@@ -3,18 +3,14 @@ import "./Dashboard.scss";
 import React, { useEffect, useMemo, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
-import DataProvider from "../DataProvider";
 import { embedDashboard } from "@superset-ui/embedded-sdk";
 
-const Dashboard = ({ id, fullheight = false, superset }: DashboardProps) => {
-  const dataProvider = useMemo(
-    () =>
-      new DataProvider(superset.endpoint, {
-        username: superset.guestUser,
-        password: superset.guestPass,
-      }),
-    [superset.endpoint, superset.guestUser, superset.guestPass]
-  );
+const Dashboard = ({
+  id,
+  domain,
+  fullheight = false,
+  dataProvider,
+}: DashboardProps) => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!ref.current) {
@@ -27,11 +23,12 @@ const Dashboard = ({ id, fullheight = false, superset }: DashboardProps) => {
           id,
         },
       ];
+      const token = await dataProvider.fetchGuestToken(resources, []);
       const config = await embedDashboard({
         id: id,
-        supersetDomain: superset.domain || superset.endpoint,
-        mountPoint: ref?.current,
-        fetchGuestToken: () => dataProvider.fetchGuestToken(resources),
+        supersetDomain: domain,
+        mountPoint: ref!.current,
+        fetchGuestToken: () => Promise.resolve(token),
         dashboardUiConfig: {
           hideTitle: true,
           hideTab: true,

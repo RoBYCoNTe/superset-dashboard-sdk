@@ -1,26 +1,28 @@
 import Dashboard from "./Dashboard";
+import DataProvider from "../DataProvider";
 import React from "react";
+
+const localDataProvider = new DataProvider("http://localhost:8088", {
+  username: "robyconte",
+  password: "ciccio",
+});
+
 export default {
   title: "Dashboard",
 };
+
 export const Scrollable = () => (
   <Dashboard
-    id="d7a5dccf-1bc6-414b-b52b-35ddfede5226"
-    superset={{
-      endpoint: "http://localhost:8088",
-      guestUser: "website",
-      guestPass: "ciccio",
-    }}
+    id="4c2374d1-6371-4793-859c-d834a5cae7d5"
+    domain="http://localhost:8088"
+    dataProvider={localDataProvider}
   />
 );
 export const FullHeight = () => (
   <Dashboard
-    id="d7a5dccf-1bc6-414b-b52b-35ddfede5226"
+    id="4c2374d1-6371-4793-859c-d834a5cae7d5"
     fullheight
-    superset={{
-      endpoint: "http://localhost:8088",
-      guestUser: "website",
-      guestPass: "ciccio",
-    }}
+    domain="http://localhost:8088"
+    dataProvider={localDataProvider}
   />
 );
