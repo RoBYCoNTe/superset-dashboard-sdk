@@ -10,6 +10,9 @@ const Dashboard = ({
   domain,
   fullheight = false,
   dataProvider,
+  uiConfig = {
+    hideTitle: true,
+  },
 }: DashboardProps) => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -29,10 +32,7 @@ const Dashboard = ({
         supersetDomain: domain,
         mountPoint: ref!.current,
         fetchGuestToken: () => Promise.resolve(token),
-        dashboardUiConfig: {
-          hideTitle: true,
-          hideTab: true,
-        },
+        dashboardUiConfig: uiConfig,
       });
       if (!fullheight) {
         return;

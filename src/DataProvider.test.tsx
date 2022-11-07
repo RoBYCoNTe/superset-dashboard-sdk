@@ -1,8 +1,20 @@
+import "isomorphic-fetch";
+
+import { Dashboard, DataProviderInterface } from "./DataProvider.types";
+
 import DataProvider from "./DataProvider";
-import { DataProviderInterface } from "./DataProvider.types";
+
+const ENDPOINT = "http://127.0.0.1:8088";
+const USERNAME = "guest";
+const PASSWORD = "guest";
+
 class MockDataProvider implements DataProviderInterface {
   fetchGuestToken() {
     return Promise.resolve("fake_token");
+  }
+
+  fetchDashboards(): Promise<Dashboard[]> {
+    return Promise.resolve([]);
   }
 }
 
@@ -12,14 +24,16 @@ describe("Test DataProvider", () => {
     expect(dataProvider.fetchGuestToken()).resolves.toBe("fake_token");
   });
   it("should receive correct props", () => {
-    const dataProvider = new DataProvider("http://localhost:8088", {
-      username: "website",
-      password: "ciccio",
+    const dataProvider = new DataProvider(ENDPOINT, {
+      username: USERNAME,
+      password: PASSWORD,
     });
-    expect(dataProvider).toHaveProperty("_apiUrl", "http://localhost:8088");
+    expect(dataProvider).toHaveProperty("_apiUrl", ENDPOINT);
     expect(dataProvider).toHaveProperty("_credentials", {
-      username: "website",
-      password: "ciccio",
+      username: USERNAME,
+      password: PASSWORD,
     });
+    // Ensure that fetched token is not empty
+    expect(dataProvider.fetchGuestToken([])).resolves.not.toBe("");
   });
 });

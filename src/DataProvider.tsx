@@ -1,8 +1,9 @@
 import {
+  AuthData,
   Credentials,
+  Dashboard,
   DataProviderInterface,
-  GetGuestTokenRequest,
-  GetGuestTokenResponse,
+  Embedded,
   LoginResponse,
   RLS,
   Resource,
@@ -11,6 +12,8 @@ import {
 export default class DataProvider implements DataProviderInterface {
   _apiUrl: string;
   _credentials: Credentials;
+
+  _authData: AuthData;
 
   constructor(apiUrl: string, credentials: Credentials) {
     this._apiUrl = apiUrl;
@@ -21,7 +24,10 @@ export default class DataProvider implements DataProviderInterface {
     return `${this._apiUrl}${path}`;
   }
 
-  private _login({ username, password }: Credentials): Promise<LoginResponse> {
+  private async _fetchLogin({
+    username,
+    password,
+  }: Credentials): Promise<LoginResponse> {
     const url = this._createUrl("/api/v1/security/login");
     return fetch(url, {
       method: "POST",
@@ -36,23 +42,62 @@ export default class DataProvider implements DataProviderInterface {
     }).then((response) => response.json());
   }
 
-  public login(): Promise<LoginResponse> {
-    return this._login(this._credentials);
-  }
-
-  public getGuestToken({
-    access_token,
-    ...body
-  }: GetGuestTokenRequest): Promise<GetGuestTokenResponse> {
-    const url = this._createUrl("/api/v1/security/guest_token/");
-    return fetch(url, {
-      method: "POST",
+  private async _fetchCsrfToken(accessToken: string): Promise<string> {
+    const url = this._createUrl("/api/v1/security/csrf_token/");
+    const response = await fetch(url, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(body),
-    }).then((response) => response.json());
+    });
+    const { result } = await response.json();
+    return result;
+  }
+
+  private async _fetchAuthData(): Promise<AuthData> {
+    if (this._authData) {
+      return this._authData;
+    }
+    if (this._credentials === null) {
+      throw new Error("Missing credentials");
+    }
+
+    const { access_token, refresh_token } = await this._fetchLogin(
+      this._credentials
+    );
+
+    const csrfToken = await this._fetchCsrfToken(access_token);
+    this._authData = {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      csrfToken,
+    };
+    return this._authData;
+  }
+
+  private async _fetchData(
+    url: string,
+    request?: RequestInit
+  ): Promise<Response> {
+    const { accessToken, csrfToken } = await this._fetchAuthData();
+    return fetch(url, {
+      ...request,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+        Authorization: `Bearer ${accessToken}`,
+        ...request?.headers,
+      },
+    });
+  }
+
+  private async _fetchEmbedded(dashboardId: number): Promise<Embedded> {
+    const url = this._createUrl(`/api/v1/dashboard/${dashboardId}/embedded`);
+    return this._fetchData(url)
+      .then((response) => response.json())
+      .then(({ result }) => result);
   }
 
   public async fetchGuestToken(
@@ -62,17 +107,43 @@ export default class DataProvider implements DataProviderInterface {
     if (this._credentials === null) {
       throw new Error("Missing credentials");
     }
-    const { access_token } = await this.login();
-    const { token } = await this.getGuestToken({
-      access_token,
-      user: {
-        username: "guest",
-        first_name: "Guest",
-        last_name: "User",
+    const { accessToken } = await this._fetchAuthData();
+    const url = this._createUrl("/api/v1/security/guest_token/");
+    const { token } = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
-      resources,
-      rls,
-    });
+      body: JSON.stringify({
+        access_token: accessToken,
+        user: {
+          username: "guest",
+          first_name: "Guest",
+          last_name: "User",
+        },
+        resources,
+        rls,
+      }),
+    }).then((response) => response.json());
     return token;
+  }
+
+  public async fetchDashboards(): Promise<Dashboard[]> {
+    const url = this._createUrl("/api/v1/dashboard/");
+    let dashboards = await this._fetchData(url)
+      .then((response) => response.json())
+      .then(({ result }) => result);
+
+    dashboards = await Promise.all(
+      await dashboards.map(async (dashboard) => ({
+        ...dashboard,
+        embedded: await this._fetchEmbedded(dashboard.id),
+      }))
+    );
+    // Returns only dashboards with embedded data
+    return dashboards.filter(
+      (dashboard) => dashboard.status === "published" && dashboard.embedded
+    );
   }
 }

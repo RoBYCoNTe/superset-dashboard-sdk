@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@superset-ui/core": "^1.5.0",
     "buffer": "^6.0.3",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",

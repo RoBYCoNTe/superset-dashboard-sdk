@@ -1,4 +1,5 @@
 import { DataProviderInterface } from "../DataProvider.types";
+import { UiConfigType } from "@superset-ui/embedded-sdk";
 
 export type DashboardProps = {
   /**
@@ -18,4 +19,8 @@ export type DashboardProps = {
    * Superset domain.
    */
   domain: string;
+  /**
+   * Superset dashboard config
+   */
+  uiConfig?: UiConfigType;
 };

@@ -3,10 +3,6 @@ export type LoginResponse = {
   refresh_token: string;
 };
 
-export type GetGuestTokenResponse = {
-  token: string;
-};
-
 export type Resource = {
   type: string;
   id: string;
@@ -34,6 +30,33 @@ export type Credentials = {
   password: string;
 };
 
+export type Embedded = {
+  uuid: string;
+};
+export type Dashboard = {
+  id: number;
+  dashboard_title: string;
+  embedded?: Embedded;
+};
+
+export type AuthData = {
+  accessToken: string;
+  refreshToken: string;
+  csrfToken: string;
+};
+
+/**
+ * Basic interface for a data provider.
+ */
 export interface DataProviderInterface {
+  /**
+   * Fetch guest token necessary to access the dashboard.
+   * @param resource
+   * @param rls
+   */
   fetchGuestToken(resource: Resource[], rls: RLS[]): Promise<string>;
+  /**
+   * Return list of available dashboards (published).
+   */
+  fetchDashboards(): Promise<Dashboard[]>;
 }
