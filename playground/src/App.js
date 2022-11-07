@@ -1,14 +1,14 @@
 import { Dashboard, DefaultDataProvider } from "superset-dashboard";
 
 const localDataProvider = new DefaultDataProvider("http://localhost:8088", {
-  username: "robyconte",
-  password: "ciccio",
+  username: "guest",
+  password: "guest",
 });
 
 function App() {
   return (
     <Dashboard
-      id="4c2374d1-6371-4793-859c-d834a5cae7d5"
+      id="9b19ba41-0287-4f29-aaa9-a554addf16e6"
       domain="http://localhost:8088"
       dataProvider={localDataProvider}
       fullheight
