@@ -5,6 +5,7 @@ import DefaultDataProvider from "./DataProvider";
 
 // https://github.com/apache/superset/issues/20800#issuecomment-1235269205
 // Until superset team not fix this issue we need to use this workaround:
-window.Buffer = Buffer;
-
+if (typeof window !== "undefined") {
+  window.Buffer = Buffer;
+}
 export { Dashboard, DataProviderInterface, DefaultDataProvider };
