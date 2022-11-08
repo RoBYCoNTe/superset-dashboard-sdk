@@ -43,6 +43,7 @@ export type AuthData = {
   accessToken: string;
   refreshToken: string;
   csrfToken: string;
+  guestToken: string;
 };
 
 /**
@@ -56,7 +57,7 @@ export interface DataProviderInterface {
    */
   fetchGuestToken(resource: Resource[], rls: RLS[]): Promise<string>;
   /**
-   * Return list of available dashboards (published).
+   * Fetch valid csrf token.
    */
-  fetchDashboards(): Promise<Dashboard[]>;
+  fetchCsrfToken(): Promise<string>;
 }

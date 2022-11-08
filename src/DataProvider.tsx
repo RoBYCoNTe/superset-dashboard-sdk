@@ -38,6 +38,7 @@ export default class DataProvider implements DataProviderInterface {
         username,
         password,
         provider: "db",
+        refresh: true,
       }),
     }).then((response) => response.json());
   }
@@ -68,10 +69,13 @@ export default class DataProvider implements DataProviderInterface {
     );
 
     const csrfToken = await this._fetchCsrfToken(access_token);
+    const guestToken = await this._fetchGuestToken(access_token);
+
     this._authData = {
       accessToken: access_token,
       refreshToken: refresh_token,
       csrfToken,
+      guestToken,
     };
     return this._authData;
   }
@@ -80,34 +84,25 @@ export default class DataProvider implements DataProviderInterface {
     url: string,
     request?: RequestInit
   ): Promise<Response> {
-    const { accessToken, csrfToken } = await this._fetchAuthData();
+    const { accessToken, guestToken } = await this._fetchAuthData();
     return fetch(url, {
       ...request,
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
         Authorization: `Bearer ${accessToken}`,
-        ...request?.headers,
+        "X-GuestToken": guestToken,
       },
     });
   }
 
-  private async _fetchEmbedded(dashboardId: number): Promise<Embedded> {
-    const url = this._createUrl(`/api/v1/dashboard/${dashboardId}/embedded`);
-    return this._fetchData(url)
-      .then((response) => response.json())
-      .then(({ result }) => result);
-  }
-
-  public async fetchGuestToken(
-    resources: Resource[],
+  public async _fetchGuestToken(
+    accessToken: string,
+    resources: Resource[] = [],
     rls: RLS[] = []
   ): Promise<string> {
     if (this._credentials === null) {
       throw new Error("Missing credentials");
     }
-    const { accessToken } = await this._fetchAuthData();
     const url = this._createUrl("/api/v1/security/guest_token/");
     const { token } = await fetch(url, {
       method: "POST",
@@ -129,21 +124,20 @@ export default class DataProvider implements DataProviderInterface {
     return token;
   }
 
-  public async fetchDashboards(): Promise<Dashboard[]> {
-    const url = this._createUrl("/api/v1/dashboard/");
-    let dashboards = await this._fetchData(url)
-      .then((response) => response.json())
-      .then(({ result }) => result);
+  public async fetchCsrfToken(): Promise<string> {
+    const { csrfToken } = await this._fetchAuthData();
+    return csrfToken;
+  }
 
-    dashboards = await Promise.all(
-      await dashboards.map(async (dashboard) => ({
-        ...dashboard,
-        embedded: await this._fetchEmbedded(dashboard.id),
-      }))
-    );
-    // Returns only dashboards with embedded data
-    return dashboards.filter(
-      (dashboard) => dashboard.status === "published" && dashboard.embedded
-    );
+  public async fetchGuestToken(
+    resources: Resource[],
+    rls: RLS[] = []
+  ): Promise<string> {
+    if (this._credentials === null) {
+      throw new Error("Missing credentials");
+    }
+    const { accessToken } = await this._fetchAuthData();
+    const token = await this._fetchGuestToken(accessToken, resources, rls);
+    return token;
   }
 }

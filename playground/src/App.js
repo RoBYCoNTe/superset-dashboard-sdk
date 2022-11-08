@@ -1,20 +1,11 @@
 import { Dashboard, DefaultDataProvider } from "superset-dashboard";
 
-import { useEffect } from "react";
-
 const localDataProvider = new DefaultDataProvider("http://localhost:8088", {
   username: "guest",
   password: "guest",
 });
 
 function App() {
-  useEffect(() => {
-    (async () => {
-      const dashboards = await localDataProvider.fetchDashboards();
-      console.info(dashboards);
-    })();
-  }, []);
-
   return (
     <div>
       <Dashboard

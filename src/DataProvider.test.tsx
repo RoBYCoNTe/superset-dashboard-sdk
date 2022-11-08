@@ -12,9 +12,8 @@ class MockDataProvider implements DataProviderInterface {
   fetchGuestToken() {
     return Promise.resolve("fake_token");
   }
-
-  fetchDashboards(): Promise<Dashboard[]> {
-    return Promise.resolve([]);
+  fetchCsrfToken(): Promise<string> {
+    return Promise.resolve("fake_token");
   }
 }
 
@@ -22,6 +21,7 @@ describe("Test DataProvider", () => {
   it("should returna fake token", () => {
     const dataProvider = new MockDataProvider();
     expect(dataProvider.fetchGuestToken()).resolves.toBe("fake_token");
+    expect(dataProvider.fetchCsrfToken()).resolves.toBe("fake_token");
   });
   it("should receive correct props", () => {
     const dataProvider = new DataProvider(ENDPOINT, {

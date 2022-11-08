@@ -64,23 +64,6 @@ The `Dashboard` component requires the following props:
 **Notes**: to retrieve more informations about how to configure superset
 please refer to the my blog post [here](https://robertoconterosito.it/2022/11/publish-superset-dashboards-inside-nextjs-app/).
 
-### Get available dashboards
-
-You can retrieve list of available dashboards using the `fetchDashboards` API.
-This API returns only published dashboards for which was previously generated
-an embedded UUID and associated to the guest user.
-
-To call the API you can use the `DefaultDataProvider` like this:
-
-```tsx
-const dp = new DefaultDataProvider("http://localhost:8088", {
-  username: "<guest account>",
-  password: "<guest password>",
-});
-const publishedDashboards = await dp.fetchDashboards();
-console.log("Published dashboards", publishedDashboards);
-```
-
 # Contributing
 
 **Before install switch to node 16.9.1 (the same used in superset):**
