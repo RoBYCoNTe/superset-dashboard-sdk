@@ -43,7 +43,6 @@ export type AuthData = {
   accessToken: string;
   refreshToken: string;
   csrfToken: string;
-  guestToken: string;
 };
 
 /**

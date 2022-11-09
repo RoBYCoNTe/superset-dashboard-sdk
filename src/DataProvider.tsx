@@ -69,30 +69,13 @@ export default class DataProvider implements DataProviderInterface {
     );
 
     const csrfToken = await this._fetchCsrfToken(access_token);
-    const guestToken = await this._fetchGuestToken(access_token);
 
     this._authData = {
       accessToken: access_token,
       refreshToken: refresh_token,
       csrfToken,
-      guestToken,
     };
     return this._authData;
-  }
-
-  private async _fetchData(
-    url: string,
-    request?: RequestInit
-  ): Promise<Response> {
-    const { accessToken, guestToken } = await this._fetchAuthData();
-    return fetch(url, {
-      ...request,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-        "X-GuestToken": guestToken,
-      },
-    });
   }
 
   public async _fetchGuestToken(

@@ -26,6 +26,7 @@ const Dashboard = ({
           id,
         },
       ];
+
       const token = await dataProvider.fetchGuestToken(resources, []);
       const config = await embedDashboard({
         id: id,
