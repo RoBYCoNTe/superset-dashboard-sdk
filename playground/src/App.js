@@ -1,17 +1,14 @@
-import { Dashboard, DefaultDataProvider } from "superset-dashboard";
+import { SUPERSET_DOMAIN, dataProvider } from "./config";
 
-const localDataProvider = new DefaultDataProvider("http://localhost:8088", {
-  username: "guest",
-  password: "guest",
-});
+import { Dashboard } from "superset-dashboard";
 
 function App() {
   return (
-    <div>
+    <div style={{ marginTop: 100, marginBottom: 100 }}>
       <Dashboard
-        id="9b19ba41-0287-4f29-aaa9-a554addf16e6"
-        domain="http://localhost:8088"
-        dataProvider={localDataProvider}
+        id="3166c187-bd00-4ec3-8687-d11c755d3d64"
+        domain={SUPERSET_DOMAIN}
+        dataProvider={dataProvider}
         fullheight
       />
     </div>

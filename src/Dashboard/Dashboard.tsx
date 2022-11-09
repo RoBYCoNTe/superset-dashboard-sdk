@@ -43,8 +43,12 @@ const Dashboard = ({
           return;
         }
         const size = await config.getScrollSize();
-        ref.current.style.height = `${size.height}px`;
-        ref.current.style.overflow = "hidden";
+        const height = parseInt(ref.current.style.height.replace("px", ""));
+
+        if (size.height !== height) {
+          ref.current.style.height = `${size.height}px`;
+          ref.current.style.overflow = "hidden";
+        }
       }, 1000);
       return () => {
         clearInterval(sizeWatcher);
