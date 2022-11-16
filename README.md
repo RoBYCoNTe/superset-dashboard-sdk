@@ -2,12 +2,13 @@
 
 Superset Dashboard is a library to help you publish your
 dashboards outside of the Superset application. This plugin does not use the
-Superset default [@superset-ui/embedded-sdk](https://www.npmjs.com/package/@superset-ui/embedded-sdk) but my own implementation written starting from the base plugin.
+Superset default [@superset-ui/embedded-sdk](https://www.npmjs.com/package/@superset-ui/embedded-sdk)
+but my own implementation written starting from the base plugin.
 
 ## Installation
 
 ```bash
-npm i -S superset-dashboard
+npm i -S superset-dashboard-sdk
 ```
 
 ## Usage
