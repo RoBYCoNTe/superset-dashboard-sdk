@@ -1,4 +1,4 @@
-# Superset Dashboard
+# Superset Dashboard SDK
 
 Superset Dashboard is a library to help you publish your
 dashboards outside of the Superset application. This plugin does not use the
