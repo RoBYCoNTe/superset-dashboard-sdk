@@ -1,5 +1,5 @@
 import { DataProviderInterface } from "../DataProvider.types";
-import { UiConfigType } from "@superset-ui/embedded-sdk";
+import { UiConfigType } from "./Embedded";
 
 export type DashboardProps = {
   /**
@@ -23,4 +23,8 @@ export type DashboardProps = {
    * Superset dashboard config
    */
   uiConfig?: UiConfigType;
+  /**
+   * You can provide guest token directly without using dataProvider.
+   */
+  guestToken?: string;
 };

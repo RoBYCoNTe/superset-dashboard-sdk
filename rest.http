@@ -1,0 +1,33 @@
+POST http://localhost:8088/api/v1/chart/data
+Accept: application/json
+Content-Type: application/json
+X-CSRFToken: Ijc2Nzc3Yjk3M2E0ZjE2ODA4NTYxMGNkZWVjNDBkNTBjOGQyMjgzNTUi.Y3T4Rg.YuJRYDy_FG1VdVL91nr3_dc36_8
+X-GuestToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjp7Imxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6Imd1ZXN0IiwiZmlyc3RfbmFtZSI6Ikd1ZXN0In0sInJlc291cmNlcyI6W3sidHlwZSI6ImRhc2hib2FyZCIsImlkIjoiYmNmNWNhM2QtMWE2OC00NjEzLWI1ODUtMmI0ZjI2NWI2MWEwIn1dLCJybHNfcnVsZXMiOltdLCJpYXQiOjE2Njg2MTAxMTguMDg4NzU4LCJleHAiOjE2Njg2MTA0MTguMDg4NzU4LCJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsInR5cGUiOiJndWVzdCJ9.HedSR8Y6Dh5v-msZv2liOl7Jq4WFK01IdA-4soffjro
+
+{
+  "datasource": {
+    "id": 2,
+    "type": "table"
+  },
+  "force": false,
+  "queries": [
+    {
+      "filters": [],
+      "columns": [
+        "anno"
+      ],
+      "orderby": [
+        [
+          "anno",
+          true
+        ]
+      ],
+
+      "row_limit": 1000,
+      "order_desc": true,
+      "groupby": [
+        "anno"
+      ]
+    }
+  ]
+}

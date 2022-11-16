@@ -1,9 +1,10 @@
 import {
   AuthData,
+  ChartData,
+  ChartDataQuery,
   Credentials,
   Dashboard,
   DataProviderInterface,
-  Embedded,
   LoginResponse,
   RLS,
   Resource,
@@ -122,5 +123,44 @@ export default class DataProvider implements DataProviderInterface {
     const { accessToken } = await this._fetchAuthData();
     const token = await this._fetchGuestToken(accessToken, resources, rls);
     return token;
+  }
+
+  public async fetchDashboardInfo(
+    guestToken: string,
+    id: Number
+  ): Promise<Dashboard> {
+    const { csrfToken } = await this._fetchAuthData();
+    const url = this._createUrl(`/api/v1/dashboard/${id}`);
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-CSRFToken": csrfToken,
+        "X-GuestToken": guestToken,
+      },
+    })
+      .then((response) => response.json())
+      .then(({ result }) => new Dashboard(result));
+  }
+
+  public async fetchChartData(
+    guestToken: string,
+    query: ChartDataQuery
+  ): Promise<ChartData> {
+    const { csrfToken } = await this._fetchAuthData();
+    const url = this._createUrl(`/api/v1/chart/data`);
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-CSRFToken": csrfToken,
+        "X-GuestToken": guestToken,
+      },
+      body: JSON.stringify(query),
+    })
+      .then((response) => response.json())
+      .then(({ result }) => result);
   }
 }

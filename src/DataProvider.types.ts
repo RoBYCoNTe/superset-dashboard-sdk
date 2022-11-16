@@ -12,7 +12,7 @@ export type RLS = {
   clause: string;
 };
 
-export type GuestUser = {
+export type User = {
   username: string;
   first_name: string;
   last_name: string;
@@ -20,7 +20,7 @@ export type GuestUser = {
 
 export type GetGuestTokenRequest = {
   access_token: string;
-  user: GuestUser;
+  user: User;
   resources: Resource[];
   rls: RLS[];
 };
@@ -33,10 +33,119 @@ export type Credentials = {
 export type Embedded = {
   uuid: string;
 };
-export type Dashboard = {
-  id: number;
+export class Dashboard {
+  info: DashboardInfo;
+  constructor(dashboardInfo: DashboardInfo) {
+    this.info = dashboardInfo;
+  }
+  getJsonMetadata(): JsonMetadata {
+    return JSON.parse(this.info.json_metadata);
+  }
+}
+
+export type ChartDataQuery = {
+  datasource: { id: number; type: string };
+  force: boolean;
+  queries: [
+    {
+      filters: [
+        {
+          col: string;
+          op: string;
+          val: string | string[];
+        }
+      ];
+      columns: string[];
+      orderby: [string[]];
+      row_limit: number;
+      order_desc: boolean;
+      groupby: string[];
+    }
+  ];
+};
+
+export type ChartData = {
+  cache_key?: string;
+  cached_dttm?: string;
+  cache_timeout?: number;
+  query?: string;
+  status?: string;
+  stacktrace?: string;
+  rowcount?: number;
+  from_dttm?: string;
+  to_dttm?: string;
+  label_map?: {
+    [key: string]: string[];
+  };
+  colnames?: string[];
+  indexnames?: string[];
+  coltypes?: string[];
+  data?: any[];
+};
+
+export type DashboardInfo = {
+  certified_details?: string;
+  certified_by?: string;
+  changed_by?: User;
+  changed_by_name?: string;
+  changed_by_url?: string;
+  changed_on?: string;
+  changed_on_delta_humanized?: string;
+  charts?: string[];
+  css?: string;
   dashboard_title: string;
-  embedded?: Embedded;
+  id: number;
+  is_managed_externally?: boolean;
+  json_metadata: string;
+  owners?: User[];
+  position_json?: string;
+  published?: boolean;
+  roles?: string[];
+  slug?: string;
+  thumbnail_url?: string;
+  url: string;
+};
+
+export type NativeFilterConfiguration = {
+  cascadeParentIds?: string[];
+  controlValues?: {
+    defaultToFirstItem?: boolean;
+    enableEmptyFilter?: boolean;
+    inverseSelection?: boolean;
+    multiSelect?: boolean;
+    searchAllOptions?: boolean;
+  };
+  defaultDataMask: {
+    extraFormData: {
+      [key: string]: any;
+    };
+    filterState: {
+      [key: string]: any;
+    };
+    ownState: {
+      [key: string]: any;
+    };
+  };
+  description: string;
+  filterType: string;
+  id: string;
+  name: string;
+  scope: {
+    excluded: string[];
+    rootPath: string[];
+  };
+  targets: [
+    {
+      column: { name: string };
+      datasetId: number;
+    }
+  ];
+  type: string;
+};
+export type JsonMetadata = {
+  refresh_frequency?: number;
+  show_native_filters?: boolean;
+  native_filter_configuration?: NativeFilterConfiguration[];
 };
 
 export type AuthData = {
@@ -59,4 +168,14 @@ export interface DataProviderInterface {
    * Fetch valid csrf token.
    */
   fetchCsrfToken(): Promise<string>;
+
+  /**
+   * Fetch dashboard info.
+   *
+   * @param id Id of the dashboard to fetch.
+   * @param guestToken Guest token to access the dashboard.
+   */
+  fetchDashboardInfo(guestToken: string, id: number): Promise<Dashboard>;
+
+  fetchChartData(guestToken: string, query: ChartDataQuery): Promise<ChartData>;
 }

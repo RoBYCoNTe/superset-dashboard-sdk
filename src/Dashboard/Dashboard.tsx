@@ -1,15 +1,16 @@
 import "./Dashboard.scss";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
-import { embedDashboard } from "@superset-ui/embedded-sdk";
+import { embedDashboard } from "./Embedded";
 
 const Dashboard = ({
   id,
   domain,
   fullheight = false,
   dataProvider,
+  guestToken,
   uiConfig = {
     hideTitle: true,
   },
@@ -27,7 +28,8 @@ const Dashboard = ({
         },
       ];
 
-      const token = await dataProvider.fetchGuestToken(resources, []);
+      const token =
+        guestToken || (await dataProvider.fetchGuestToken(resources, []));
       const config = await embedDashboard({
         id: id,
         supersetDomain: domain,
@@ -42,7 +44,9 @@ const Dashboard = ({
         if (ref.current === null) {
           return;
         }
+
         const size = await config.getScrollSize();
+
         const height = parseInt(ref.current.style.height.replace("px", ""));
 
         if (size.height !== height) {

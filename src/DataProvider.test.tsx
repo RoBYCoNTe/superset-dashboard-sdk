@@ -1,6 +1,12 @@
 import "isomorphic-fetch";
 
-import { Dashboard, DataProviderInterface } from "./DataProvider.types";
+import {
+  ChartData,
+  ChartDataQuery,
+  Dashboard,
+  DashboardInfo,
+  DataProviderInterface,
+} from "./DataProvider.types";
 
 import DataProvider from "./DataProvider";
 
@@ -14,6 +20,22 @@ class MockDataProvider implements DataProviderInterface {
   }
   fetchCsrfToken(): Promise<string> {
     return Promise.resolve("fake_token");
+  }
+  fetchDashboardInfo(guestToken: string, id: number): Promise<Dashboard> {
+    return Promise.resolve(
+      new Dashboard({
+        id: 0,
+        dashboard_title: "fake_dashboard",
+        json_metadata: "{}",
+        url: "fake_url",
+      })
+    );
+  }
+  fetchChartData(
+    guestToken: string,
+    query: ChartDataQuery
+  ): Promise<ChartData> {
+    return Promise.resolve({});
   }
 }
 
