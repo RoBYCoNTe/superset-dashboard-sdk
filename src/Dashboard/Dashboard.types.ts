@@ -1,4 +1,5 @@
 import { DataProviderInterface } from "../DataProvider.types";
+import { Filter } from "./Embedded/Filter";
 import { UiConfigType } from "./Embedded";
 
 export type DashboardProps = {
@@ -27,4 +28,8 @@ export type DashboardProps = {
    * You can provide guest token directly without using dataProvider.
    */
   guestToken?: string;
+  /**
+   * List of filters to apply to the dashboard.
+   */
+  filters?: Filter[];
 };

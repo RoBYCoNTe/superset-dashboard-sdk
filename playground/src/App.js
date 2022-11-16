@@ -1,21 +1,22 @@
-import {
-  Dashboard,
-  createDefaultNativeFilter,
-  createDefaultNativeFilterGroup,
-} from "superset-dashboard";
+import { Dashboard, Filter } from "superset-dashboard";
 import { SUPERSET_DOMAIN, dataProvider } from "./config";
 import { useEffect, useState } from "react";
 
-const RESOURCE_ID = "bcf5ca3d-1a68-4613-b585-2b4f265b61a0";
+const RESOURCE_ID = "a4b1e3e4-827a-46a2-9fa0-0259816c64ec";
 function App() {
   const [guestToken, setGuestToken] = useState(null);
   useEffect(() => {
     async function fetch() {
-      const guestToken = await dataProvider.fetchGuestToken([
-        { id: RESOURCE_ID, type: "dashboard" },
-      ]);
+      const guestToken = await dataProvider.fetchGuestToken(
+        [{ id: RESOURCE_ID, type: "dashboard" }],
+        [
+          {
+            clause: "year = 2022",
+          },
+        ]
+      );
       setGuestToken(guestToken);
-      const dashboard = await dataProvider.fetchDashboardInfo(guestToken, 1);
+      const dashboard = await dataProvider.fetchDashboardInfo(guestToken, 4);
       const jsonMetadata = dashboard.getJsonMetadata();
       const nativeFilter = jsonMetadata.native_filter_configuration[0];
       const targetColumn = nativeFilter.targets[0];
@@ -51,24 +52,22 @@ function App() {
       dataProvider={dataProvider}
       fullheight
       guestToken={guestToken}
+      filters={[
+        {
+          id: "NATIVE_FILTER-37AnUlqIo",
+          name: "pathology",
+          operator: "IN",
+          value: ["CHE"],
+        },
+        {
+          id: "NATIVE_FILTER-GAeFWY3OB",
+          name: "risk",
+          operator: "IN",
+          value: "Tutte",
+        },
+      ]}
       uiConfig={{
         hideTitle: true,
-        filters: {
-          native_filters: createDefaultNativeFilterGroup([
-            createDefaultNativeFilter(
-              "NATIVE_FILTER-37AnUlqIo",
-              "pathology",
-              "IN",
-              "CHE"
-            ),
-            createDefaultNativeFilter(
-              "NATIVE_FILTER-GAeFWY3OB",
-              "risk",
-              "IN",
-              "Tutte"
-            ),
-          ]),
-        },
       }}
     />
   );

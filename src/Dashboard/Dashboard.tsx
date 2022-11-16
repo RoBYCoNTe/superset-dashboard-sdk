@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
 import { embedDashboard } from "./Embedded";
+import { formatFilter } from "./Embedded/Filter";
 
 const Dashboard = ({
   id,
@@ -11,6 +12,7 @@ const Dashboard = ({
   fullheight = false,
   dataProvider,
   guestToken,
+  filters,
   uiConfig = {
     hideTitle: true,
   },
@@ -35,7 +37,16 @@ const Dashboard = ({
         supersetDomain: domain,
         mountPoint: ref!.current,
         fetchGuestToken: () => Promise.resolve(token),
-        dashboardUiConfig: uiConfig,
+        dashboardUiConfig: {
+          ...uiConfig,
+          filters: {
+            ...uiConfig.filters,
+            native_filters:
+              filters && filters.length > 0
+                ? `(${filters.map(formatFilter).join(",")})`
+                : undefined,
+          },
+        },
       });
       if (!fullheight) {
         return;

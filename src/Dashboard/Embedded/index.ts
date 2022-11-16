@@ -38,9 +38,10 @@ export type UiConfigType = {
   hideTab?: boolean;
   hideChartControls?: boolean;
   filters?: {
-    [key: string]: boolean | undefined;
+    [key: string]: boolean | undefined | string;
     visible?: boolean;
     expanded?: boolean;
+    native_filters?: string | undefined;
   };
 };
 

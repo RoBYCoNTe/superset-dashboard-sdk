@@ -1,6 +1,6 @@
 {
   "name": "superset-dashboard",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Superset Dashboard visualization component built on top of @superset-ui/embedded-sdk",
   "main": "build/index.js",
   "module": "build/index.es.js",

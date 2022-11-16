@@ -42,7 +42,16 @@ const MyDashboard = () => {
     <Dashboard
       dataProvider={dataProvider}
       domain="http://localhost:8088"
-      id={1}
+      guestToken={"<guest token>"}
+      id={"<embedded dashboard id>"}
+      filters={[
+        {
+          id: "NATIVE_FILTER_ID",
+          value: "NATIVE_FILTER_VALUE",
+          operator: "NATIVE_FILTER_OPERATOR",
+          value: ["NATIVE_FILTER_VALUE_1", "NATIVE_FILTER_VALUE_2"],
+        },
+      ]}
     />
   );
 };
@@ -56,9 +65,28 @@ The `Dashboard` component requires the following props:
 - `id`: the id of the dashboard to render.
 - `fullheight`: if true, the dashboard will take the full height of the
   container. Default: `false`.
+- `guestToken`: you can pass a guest token to the component. If not provided,
+  the component will use the `dataProvider` to retrieve one.
+- `filters`: an array of filters to apply to the dashboard. Default: `[]`.
 
-**Notes**: to retrieve more informations about how to configure superset
-please refer to the my blog post [here](https://robertoconterosito.it/2022/11/publish-superset-dashboards-inside-nextjs-app/).
+### Quering the Dashboard
+
+You can query the dashboard to retrieve basic informations and `json_metadata`
+from which you can prepare your custom forms to "pre-filter" dashboards before
+rendering them.
+
+Using previous instanced `dataProvider`, you can query the dashboard like in this example:
+
+```tsx
+const guestToken = await dataProvider.fetchGuestToken(["<dashboard id>"]);
+const dashboard = await dataProvider.fetchDashboard(guestToken, "<integer id>");
+
+// Extract list of "native filters" from dashboard json_metadata:
+const jsonMetadata = dashboard.getJsonMetadata();
+const nativeFilters = jsonMetadata?.native_filter_configuration ?? [];
+```
+
+Using that data you can render your custom filter form and use them before rendering the dashboard.
 
 # Contributing
 
