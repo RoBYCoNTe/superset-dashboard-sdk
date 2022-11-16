@@ -3,6 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "Superset Dashboard visualization component with improved specs.",
   "main": "build/index.js",
+  "private": false,
   "module": "build/index.es.js",
   "files": [
     "build"
