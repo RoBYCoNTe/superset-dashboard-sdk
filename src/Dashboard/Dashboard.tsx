@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
 import { embedDashboard } from "./Embedded";
-import { formatFilter } from "./Embedded/Filter";
+import { formatNativeFilter } from "./Embedded/Filter";
 
 const Dashboard = ({
   id,
@@ -12,7 +12,7 @@ const Dashboard = ({
   fullheight = false,
   dataProvider,
   guestToken,
-  filters,
+  nativeFilters,
   uiConfig = {
     hideTitle: true,
   },
@@ -42,8 +42,8 @@ const Dashboard = ({
           filters: {
             ...uiConfig.filters,
             native_filters:
-              filters && filters.length > 0
-                ? `(${filters.map(formatFilter).join(",")})`
+              nativeFilters && nativeFilters.length > 0
+                ? `(${nativeFilters.map(formatNativeFilter).join(",")})`
                 : undefined,
           },
         },

@@ -1,5 +1,5 @@
 import { DataProviderInterface } from "../DataProvider.types";
-import { Filter } from "./Embedded/Filter";
+import { NativeFilter } from "./Embedded/Filter";
 import { UiConfigType } from "./Embedded";
 
 export type DashboardProps = {
@@ -31,5 +31,5 @@ export type DashboardProps = {
   /**
    * List of filters to apply to the dashboard.
    */
-  filters?: Filter[];
+  nativeFilters?: NativeFilter[];
 };

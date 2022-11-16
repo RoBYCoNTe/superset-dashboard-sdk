@@ -44,7 +44,7 @@ const MyDashboard = () => {
       domain="http://localhost:8088"
       guestToken={"<guest token>"}
       id={"<embedded dashboard id>"}
-      filters={[
+      nativeFilters={[
         {
           id: "NATIVE_FILTER_ID",
           value: "NATIVE_FILTER_VALUE",
@@ -67,7 +67,7 @@ The `Dashboard` component requires the following props:
   container. Default: `false`.
 - `guestToken`: you can pass a guest token to the component. If not provided,
   the component will use the `dataProvider` to retrieve one.
-- `filters`: an array of filters to apply to the dashboard. Default: `[]`.
+- `nativeFilters`: an array of filters to apply to the dashboard. Default: `[]`.
 
 ### Quering the Dashboard
 
