@@ -1,14 +1,15 @@
-import { Dashboard, Filter } from "superset-dashboard";
 import { SUPERSET_DOMAIN, dataProvider } from "./config";
 import { useEffect, useState } from "react";
 
-const RESOURCE_ID = "a4b1e3e4-827a-46a2-9fa0-0259816c64ec";
+import { Dashboard } from "superset-dashboard";
+
+const RESOURCE_UUID = "a4b1e3e4-827a-46a2-9fa0-0259816c64ec";
 function App() {
   const [guestToken, setGuestToken] = useState(null);
   useEffect(() => {
     async function fetch() {
       const guestToken = await dataProvider.fetchGuestToken(
-        [{ id: RESOURCE_ID, type: "dashboard" }],
+        [{ id: RESOURCE_UUID, type: "dashboard" }],
         [
           {
             clause: "year = 2022",
@@ -47,7 +48,7 @@ function App() {
 
   return (
     <Dashboard
-      id={RESOURCE_ID}
+      uuid={RESOURCE_UUID}
       domain={SUPERSET_DOMAIN}
       dataProvider={dataProvider}
       fullheight

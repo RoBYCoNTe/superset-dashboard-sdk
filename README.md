@@ -44,7 +44,7 @@ const MyDashboard = () => {
       dataProvider={dataProvider}
       domain="http://localhost:8088"
       guestToken={"<guest token>"}
-      id={"<embedded dashboard id>"}
+      uuid={"<embedded dashboard id>"}
       nativeFilters={[
         {
           id: "NATIVE_FILTER_ID",
@@ -63,7 +63,7 @@ The `Dashboard` component requires the following props:
 - `dataProvider`: an instance of class implementing `DataProviderInterface`
   to retrieve data from Superset.
 - `domain`: the domain where Superset is running.
-- `id`: the id of the dashboard to render.
+- `uuid`: the uuid of the dashboard to render.
 - `fullheight`: if true, the dashboard will take the full height of the
   container. Default: `false`.
 - `guestToken`: you can pass a guest token to the component. If not provided,

@@ -47,7 +47,7 @@ export type UiConfigType = {
 
 export type EmbedDashboardParams = {
   /** The id provided by the embed configuration UI in Superset */
-  id: string;
+  uuid: string;
   /** The domain where Superset can be located, with protocol, such as: https://superset.example.com */
   supersetDomain: string;
   /** The html element within which to mount the iframe */
@@ -77,7 +77,7 @@ export type EmbeddedDashboard = {
  * Embeds a Superset dashboard into the page using an iframe.
  */
 export async function embedDashboard({
-  id,
+  uuid,
   supersetDomain,
   mountPoint,
   fetchGuestToken,
@@ -86,7 +86,7 @@ export async function embedDashboard({
 }: EmbedDashboardParams): Promise<EmbeddedDashboard> {
   function log(...info: unknown[]) {
     if (debug) {
-      console.debug(`[superset-embedded-sdk][dashboard ${id}]`, ...info);
+      console.debug(`[superset-embedded-sdk][dashboard ${uuid}]`, ...info);
     }
   }
 
@@ -167,7 +167,7 @@ export async function embedDashboard({
         );
       });
 
-      iframe.src = `${supersetDomain}/embedded/${id}${dashboardConfig}${filterConfigUrlParams}`;
+      iframe.src = `${supersetDomain}/embedded/${uuid}${dashboardConfig}${filterConfigUrlParams}`;
       // Check if mountPoint has method replaceChildren and use it if available
       if (mountPoint != null) {
         mountPoint.replaceChildren(iframe);

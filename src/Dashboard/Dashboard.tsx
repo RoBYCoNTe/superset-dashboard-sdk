@@ -4,10 +4,10 @@ import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
 import { embedDashboard } from "./Embedded";
-import { formatNativeFilter } from "./Embedded/Filter";
+import { formatNativeFilter } from "./Embedded/NativeFilter";
 
 const Dashboard = ({
-  id,
+  uuid,
   domain,
   fullheight = false,
   dataProvider,
@@ -26,14 +26,14 @@ const Dashboard = ({
       const resources = [
         {
           type: "dashboard",
-          id,
+          id: uuid,
         },
       ];
 
       const token =
         guestToken || (await dataProvider.fetchGuestToken(resources, []));
       const config = await embedDashboard({
-        id: id,
+        uuid: uuid,
         supersetDomain: domain,
         mountPoint: ref!.current,
         fetchGuestToken: () => Promise.resolve(token),
@@ -69,7 +69,7 @@ const Dashboard = ({
         clearInterval(sizeWatcher);
       };
     })();
-  }, [ref.current, id, fullheight]);
+  }, [ref.current, uuid, fullheight]);
 
   return (
     <div
