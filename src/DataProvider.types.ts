@@ -48,42 +48,50 @@ export type ChartDataQueryFilter = {
   op: string;
   val: string;
 };
+export type ChartDataFormData = {
+  adhoc_filters?: any[];
+  datasource?: string;
+  defaultToFirstItem?: boolean;
+  enableEmptyFilter?: boolean;
+  extra_filters?: any[];
+  extra_form_data?: any;
+  force?: boolean;
+  groupby?: string[];
+  inView?: boolean;
+  inverseSelection?: boolean;
+  metrics?: string[];
+  multiSelect?: boolean;
+  result_format?: string;
+  result_type?: string;
+  row_limit?: number;
+  searchAllOptions?: boolean;
+  showSearch?: boolean;
+  sortAscending?: boolean;
+  type?: string;
+  url_params?: any;
+  viz_type?: string;
+};
+export type ChartDataQueryItem = {
+  annotation_layers?: any[];
+  applied_time_extras?: any;
+  columns?: string[];
+  custom_form_data?: any;
+  custom_params?: any;
+  extras?: { having?: string; where?: string };
+  filters?: ChartDataQueryFilter[];
+  groupby?: any[];
+  metrics?: string[];
+  order_desc?: boolean;
+  orderby?: [any[]];
+  row_limit?: number;
+  timeseries_limit?: number;
+  url_params?: any;
+};
 export type ChartDataQuery = {
   datasource: { id: number; type: string };
   force: boolean;
-  form_data?: {
-    adhoc_filters?: any[];
-    datasource?: string;
-    defaultToFirstItem?: boolean;
-    enableEmptyFilter?: boolean;
-    extra_filters?: any[];
-    extra_form_data?: any;
-    force?: boolean;
-    groupby?: string[];
-    inView?: boolean;
-    inverseSelection?: boolean;
-    metrics?: string[];
-    multiSelect?: boolean;
-    result_format?: string;
-    result_type?: string;
-    row_limit?: number;
-    searchAllOptions?: boolean;
-    showSearch?: boolean;
-    sortAscending?: boolean;
-    type?: string;
-    urlParams?: any;
-    viz_type?: string;
-  };
-  queries?: [
-    {
-      filters?: ChartDataQueryFilter[];
-      columns?: string[];
-      orderby?: [any[]];
-      row_limit?: number;
-      order_desc?: boolean;
-      groupby?: any[];
-    }
-  ];
+  form_data?: ChartDataFormData;
+  queries?: ChartDataQueryItem[];
   result_format?: string;
   result_type?: string;
 };

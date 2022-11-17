@@ -150,6 +150,7 @@ export default class DataProvider implements DataProviderInterface {
   ): Promise<ChartData> {
     const { csrfToken } = await this._fetchAuthData();
     const url = this._createUrl(`/api/v1/chart/data`);
+
     return fetch(url, {
       method: "POST",
       headers: {
