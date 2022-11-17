@@ -43,6 +43,11 @@ export class Dashboard {
   }
 }
 
+export type ChartDataQueryFilter = {
+  col: string;
+  op: string;
+  val: string;
+};
 export type ChartDataQuery = {
   datasource: { id: number; type: string };
   force: boolean;
@@ -71,13 +76,7 @@ export type ChartDataQuery = {
   };
   queries: [
     {
-      filters: [
-        {
-          col: string;
-          op: string;
-          val: string | string[];
-        }
-      ];
+      filters: ChartDataQueryFilter[];
       columns: string[];
       orderby: [string[]];
       row_limit: number;
