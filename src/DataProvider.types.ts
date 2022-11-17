@@ -46,6 +46,29 @@ export class Dashboard {
 export type ChartDataQuery = {
   datasource: { id: number; type: string };
   force: boolean;
+  form_data: {
+    adhoc_filters: any[];
+    datasource: string;
+    defaultToFirstItem: boolean;
+    enableEmptyFilter: boolean;
+    extra_filters: any[];
+    extra_form_data: any;
+    force: boolean;
+    groupby: string[];
+    inView: boolean;
+    inverseSelection: boolean;
+    metrics: string[];
+    multiSelect: boolean;
+    result_format: string;
+    result_type: string;
+    row_limit: number;
+    searchAllOptions: boolean;
+    showSearch: boolean;
+    sortAscending: boolean;
+    type: string;
+    urlParams: any;
+    viz_type: string;
+  };
   queries: [
     {
       filters: [
@@ -62,6 +85,8 @@ export type ChartDataQuery = {
       groupby: string[];
     }
   ];
+  result_format: string;
+  result_type: string;
 };
 
 export type ChartData = {
