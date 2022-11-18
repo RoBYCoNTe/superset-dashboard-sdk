@@ -4,7 +4,7 @@ import { UiConfigType } from "./Embedded";
 
 export type DashboardProps = {
   /**  The data provider to use for the dashboard. */
-  dataProvider: DataProviderInterface;
+  dataProvider?: DataProviderInterface;
   /** The uuid of the dashboard to display. */
   uuid: string;
   /**
