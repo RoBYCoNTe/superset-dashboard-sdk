@@ -140,6 +140,7 @@ export type DashboardInfo = {
 
 export type NativeFilterConfiguration = {
   cascadeParentIds?: string[];
+
   controlValues?: {
     defaultToFirstItem?: boolean;
     enableEmptyFilter?: boolean;
@@ -173,6 +174,7 @@ export type NativeFilterConfiguration = {
     }
   ];
   type: string;
+  title: string;
 };
 export type JsonMetadata = {
   refresh_frequency?: number;
