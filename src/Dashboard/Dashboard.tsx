@@ -36,11 +36,14 @@ const Dashboard = ({
         guestToken || (await dataProvider.fetchGuestToken(resources, []));
 
       const mergedNativeFilters = {}
-      nativeFilters.map(formatNativeFilter).forEach(filterObject => {
-        const nativeFilterKey = Object.keys(filterObject)[0]
-        mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey]
-      })
-      const risonFilters = rison.encode(mergedNativeFilters)
+      let risonFilters = ''
+      if(nativeFilters && nativeFilters.length > 0){
+        nativeFilters.map(formatNativeFilter).forEach(filterObject => {
+          const nativeFilterKey = Object.keys(filterObject)[0]
+          mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey]
+        })
+        risonFilters = rison.encode(mergedNativeFilters)
+      }
 
       const config = await embedDashboard({
         uuid: uuid,
@@ -51,10 +54,7 @@ const Dashboard = ({
           ...uiConfig,
           filters: {
             ...uiConfig.filters,
-            native_filters:
-              nativeFilters && nativeFilters.length > 0
-                ? risonFilters
-                : undefined,
+            native_filters: risonFilters,
           },
         },
       });
