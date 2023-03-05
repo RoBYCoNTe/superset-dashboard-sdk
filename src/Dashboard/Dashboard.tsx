@@ -40,7 +40,7 @@ const Dashboard = ({
         const nativeFilterKey = Object.keys(filterObject)[0]
         mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey]
       })
-      const risonJsonFilters = rison.encode(mergedNativeFilters)
+      const risonFilters = rison.encode(mergedNativeFilters)
 
       const config = await embedDashboard({
         uuid: uuid,
@@ -53,7 +53,7 @@ const Dashboard = ({
             ...uiConfig.filters,
             native_filters:
               nativeFilters && nativeFilters.length > 0
-                ? risonJsonFilters
+                ? risonFilters
                 : undefined,
           },
         },

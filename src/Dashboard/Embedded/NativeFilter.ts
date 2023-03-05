@@ -15,7 +15,7 @@ export const formatNativeFilter = (filter: NativeFilter) => {
     "filters": [
       {
         "col": filter.column,
-        "op": "IN",
+        "op": filter.operator,
         "val": filter.value
       }
     ]
