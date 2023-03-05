@@ -2,9 +2,39 @@ export type NativeFilter = {
   id: string;
   column: string;
   operator: string;
-  value: string;
+  value: any;
 };
 
+
+
 export const formatNativeFilter = (filter: NativeFilter) => {
-  return `${filter.id}:(__cache:(label:'${filter.value}',validateStatus:!f,value:!('${filter.value}')),extraFormData:(filters:!((col:${filter.column},op:${filter.operator},val:!('${filter.value}')))),filterState:(label:'${filter.value}',validateStatus:!f,value:!('${filter.value}')),id:${filter.id},ownState:())`;
+  const filterObject = {
+    [filter.id]: {
+    "id": filter.id,
+    "extraFormData": {
+    "filters": [
+      {
+        "col": filter.column,
+        "op": "IN",
+        "val": filter.value
+      }
+    ]
+  },
+    "filterState": {
+    "validateMessage": false,
+      "validateStatus": false,
+      "label": filter.value.toString(),
+      "value": filter.value
+  },
+    "ownState": {},
+    "__cache": {
+    "validateMessage": false,
+      "validateStatus": false,
+      "label": filter.value.toString(),
+      "value": filter.value
+  }
+  }
+}
+
+  return filterObject
 };

@@ -2,9 +2,9 @@
   "name": "superset-dashboard-sdk",
   "version": "1.0.0-alpha.9",
   "description": "Superset Dashboard visualization component with improved specs.",
-  "main": "build/index.js",
+  "main": "src/index.js",
   "private": false,
-  "module": "build/index.es.js",
+  "module": "src/index.es.js",
   "files": [
     "build"
   ],
@@ -48,7 +48,8 @@
     "rollup-plugin-typescript2": "^0.27.0",
     "sass-loader": "^8.0.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.9.10"
+    "typescript": "^3.9.10",
+    "rison": "^0.1.1"
   },
   "peerDependencies": {
     "react": ">=16.13.1",
