@@ -18,7 +18,7 @@ const Dashboard = ({
     hideTitle: true,
   },
 }: DashboardProps) => {
-  console.log("dashboard native filters", nativeFilters)
+  
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!ref.current) {

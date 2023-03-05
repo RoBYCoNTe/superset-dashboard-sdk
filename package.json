@@ -2,9 +2,9 @@
   "name": "superset-dashboard-sdk",
   "version": "1.0.0-alpha.9",
   "description": "Superset Dashboard visualization component with improved specs.",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "private": false,
-  "module": "src/index.es.js",
+  "module": "build/index.es.js",
   "files": [
     "build"
   ],
