@@ -1,5 +1,6 @@
 import "./Dashboard.scss";
 
+import rison from 'rison';
 import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
@@ -17,6 +18,7 @@ const Dashboard = ({
     hideTitle: true,
   },
 }: DashboardProps) => {
+  
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!ref.current) {
@@ -32,6 +34,17 @@ const Dashboard = ({
 
       const token =
         guestToken || (await dataProvider.fetchGuestToken(resources, []));
+
+      const mergedNativeFilters = {}
+      let risonFilters = ''
+      if(nativeFilters && nativeFilters.length > 0){
+        nativeFilters.map(formatNativeFilter).forEach(filterObject => {
+          const nativeFilterKey = Object.keys(filterObject)[0]
+          mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey]
+        })
+        risonFilters = rison.encode(mergedNativeFilters)
+      }
+
       const config = await embedDashboard({
         uuid: uuid,
         supersetDomain: domain,
@@ -41,10 +54,7 @@ const Dashboard = ({
           ...uiConfig,
           filters: {
             ...uiConfig.filters,
-            native_filters:
-              nativeFilters && nativeFilters.length > 0
-                ? `(${nativeFilters.map(formatNativeFilter).join(",")})`
-                : undefined,
+            native_filters: risonFilters,
           },
         },
       });
