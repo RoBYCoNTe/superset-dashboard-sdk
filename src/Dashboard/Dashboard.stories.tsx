@@ -21,7 +21,7 @@ export const Scrollable = () => (
 export const FullHeight = () => (
   <Dashboard
     uuid="4c2374d1-6371-4793-859c-d834a5cae7d5"
-    fullheight
+    fullHeight
     domain="http://localhost:8088"
     dataProvider={localDataProvider}
   />

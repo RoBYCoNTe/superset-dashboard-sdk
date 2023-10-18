@@ -10,7 +10,7 @@ import { formatNativeFilter } from "./Embedded/NativeFilter";
 const Dashboard = ({
   uuid,
   domain,
-  fullheight = false,
+  fullHeight = false,
   dataProvider,
   guestToken,
   nativeFilters,
@@ -58,7 +58,7 @@ const Dashboard = ({
           },
         },
       });
-      if (!fullheight) {
+      if (!fullHeight) {
         return;
       }
       const sizeWatcher = setInterval(async () => {
@@ -79,12 +79,12 @@ const Dashboard = ({
         clearInterval(sizeWatcher);
       };
     })();
-  }, [ref.current, uuid, fullheight]);
+  }, [ref.current, uuid, fullHeight]);
 
   return (
     <div
       className={`superset-dashboard ${
-        fullheight ? "superset-dashboard-fullheight" : ""
+        fullHeight ? "superset-dashboard-fullheight" : ""
       }`}
       ref={ref}
     />
