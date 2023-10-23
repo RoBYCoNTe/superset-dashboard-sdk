@@ -51,7 +51,7 @@ function App() {
       uuid={RESOURCE_UUID}
       domain={SUPERSET_DOMAIN}
       dataProvider={dataProvider}
-      fullheight
+      fullHeight
       guestToken={guestToken}
       filters={[
         {

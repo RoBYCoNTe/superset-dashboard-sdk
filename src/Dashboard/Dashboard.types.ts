@@ -8,10 +8,10 @@ export type DashboardProps = {
   /** The uuid of the dashboard to display. */
   uuid: string;
   /**
-   * Indicates whether the dashboard should be displayed in fullheight mode.
+   * Indicates whether the dashboard should be displayed in fullHeight mode.
    * In that case the dashboard will try to fit itself adding scrollbar to the container.
    */
-  fullheight?: boolean;
+  fullHeight?: boolean;
   /** Superset domain. */
   domain: string;
   /** Superset dashboard config */
