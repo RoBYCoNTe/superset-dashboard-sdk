@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 
-import rison from 'rison';
+import rison from "rison";
 import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
@@ -10,7 +10,6 @@ import { formatNativeFilter } from "./Embedded/NativeFilter";
 const Dashboard = ({
   uuid,
   domain,
-  fullHeight = false,
   dataProvider,
   guestToken,
   nativeFilters,
@@ -18,7 +17,6 @@ const Dashboard = ({
     hideTitle: true,
   },
 }: DashboardProps) => {
-  
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!ref.current) {
@@ -32,17 +30,16 @@ const Dashboard = ({
         },
       ];
 
-      const token =
-        guestToken || (await dataProvider.fetchGuestToken(resources, []));
+      const token = guestToken || (await dataProvider.fetchGuestToken(resources, []));
 
-      const mergedNativeFilters = {}
-      let risonFilters = ''
-      if(nativeFilters && nativeFilters.length > 0){
-        nativeFilters.map(formatNativeFilter).forEach(filterObject => {
-          const nativeFilterKey = Object.keys(filterObject)[0]
-          mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey]
-        })
-        risonFilters = rison.encode(mergedNativeFilters)
+      const mergedNativeFilters = {};
+      let risonFilters = "";
+      if (nativeFilters && nativeFilters.length > 0) {
+        nativeFilters.map(formatNativeFilter).forEach((filterObject) => {
+          const nativeFilterKey = Object.keys(filterObject)[0];
+          mergedNativeFilters[nativeFilterKey] = filterObject[nativeFilterKey];
+        });
+        risonFilters = rison.encode(mergedNativeFilters);
       }
 
       const config = await embedDashboard({
@@ -58,37 +55,11 @@ const Dashboard = ({
           },
         },
       });
-      if (!fullHeight) {
-        return;
-      }
-      const sizeWatcher = setInterval(async () => {
-        if (ref.current === null) {
-          return;
-        }
-
-        const size = await config.getScrollSize();
-
-        const height = parseInt(ref.current.style.height.replace("px", ""));
-
-        if (size.height !== height) {
-          ref.current.style.height = `${size.height}px`;
-          ref.current.style.overflow = "hidden";
-        }
-      }, 1000);
-      return () => {
-        clearInterval(sizeWatcher);
-      };
+      return;
     })();
-  }, [ref.current, uuid, fullHeight]);
+  }, [ref.current, uuid]);
 
-  return (
-    <div
-      className={`superset-dashboard ${
-        fullHeight ? "superset-dashboard-fullheight" : ""
-      }`}
-      ref={ref}
-    />
-  );
+  return <div className={`superset-dashboard`} ref={ref} />;
 };
 
 export default Dashboard;

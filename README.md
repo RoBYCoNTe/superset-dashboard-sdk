@@ -64,8 +64,6 @@ The `Dashboard` component requires the following props:
   to retrieve data from Superset.
 - `domain`: the domain where Superset is running.
 - `uuid`: the uuid of the dashboard to render.
-- `fullHeight`: if true, the dashboard will take the full height of the
-  container. Default: `false`.
 - `guestToken`: you can pass a guest token to the component. If not provided,
   the component will use the `dataProvider` to retrieve one.
 - `nativeFilters`: an array of filters to apply to the dashboard. Default: `[]`.
