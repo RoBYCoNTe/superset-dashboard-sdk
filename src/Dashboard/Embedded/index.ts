@@ -37,6 +37,9 @@ export type UiConfigType = {
   hideTitle?: boolean;
   hideTab?: boolean;
   hideChartControls?: boolean;
+  urlParams?: {
+    [key: string]: any;
+  }
   filters?: {
     [key: string]: boolean | undefined | string;
     visible?: boolean;
@@ -54,7 +57,7 @@ export type EmbedDashboardParams = {
   mountPoint: any;
   /** A function to fetch a guest token from the Host App's backend server */
   fetchGuestToken: GuestTokenFetchFn;
-  /** The dashboard UI config: hideTitle, hideTab, hideChartControls, filters.visible, filters.expanded **/
+  /** The dashboard UI config: hideTitle, hideTab, hideChartControls, urlParams, filters.visible, filters.expanded **/
   dashboardUiConfig?: UiConfigType;
   /** Are we in debug mode? */
   debug?: boolean;
@@ -114,6 +117,8 @@ export async function embedDashboard({
       const dashboardConfig = dashboardUiConfig
         ? `?uiConfig=${calculateConfig()}`
         : "";
+      const urlParams = dashboardUiConfig?.urlParams;
+      const urlParamsString = Object.keys(urlParams).length ? '&' + new URLSearchParams(urlParams).toString() : '';
       const filterConfig = dashboardUiConfig?.filters || {};
       const filterConfigKeys = Object.keys(filterConfig);
       const filterConfigUrlParams =
@@ -167,7 +172,7 @@ export async function embedDashboard({
         );
       });
 
-      iframe.src = `${supersetDomain}/embedded/${uuid}${dashboardConfig}${filterConfigUrlParams}`;
+      iframe.src = `${supersetDomain}/embedded/${uuid}${dashboardConfig}${filterConfigUrlParams}${urlParamsString}`;
       // Check if mountPoint has method replaceChildren and use it if available
       if (mountPoint != null) {
         mountPoint.replaceChildren(iframe);
