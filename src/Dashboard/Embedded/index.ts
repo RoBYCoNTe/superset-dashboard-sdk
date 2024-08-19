@@ -117,7 +117,7 @@ export async function embedDashboard({
       const dashboardConfig = dashboardUiConfig
         ? `?uiConfig=${calculateConfig()}`
         : "";
-      const urlParams = dashboardUiConfig?.urlParams;
+      const urlParams = dashboardUiConfig?.urlParams || {}
       const urlParamsString = Object.keys(urlParams).length ? '&' + new URLSearchParams(urlParams).toString() : '';
       const filterConfig = dashboardUiConfig?.filters || {};
       const filterConfigKeys = Object.keys(filterConfig);
