@@ -2,7 +2,7 @@ import { SUPERSET_DOMAIN, dataProvider } from "./config";
 
 import { Dashboard } from "superset-dashboard";
 
-const RESOURCE_UUID = "8d0e626e-e0c4-4458-8f11-11761a4eb757";
+const RESOURCE_UUID = "ffbb43c4-1faf-49bf-bc7c-cdde244c1da0";
 function App() {
   // const [guestToken, setGuestToken] = useState(null);
   // useEffect(() => {
@@ -67,6 +67,12 @@ function App() {
         // ]}
         uiConfig={{
           hideTitle: true,
+          hideTab: true,
+          hideChartControls: true,
+          filters: {
+            visible: false,
+            expanded: false,
+          },
         }}
       />
     </div>

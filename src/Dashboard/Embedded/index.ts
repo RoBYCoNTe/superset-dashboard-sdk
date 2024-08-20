@@ -108,6 +108,7 @@ export async function embedDashboard({
         configNumber += 8;
       }
     }
+    console.log(configNumber);
     return configNumber;
   }
 
