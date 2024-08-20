@@ -4,7 +4,7 @@ import rison from "rison";
 import React, { useEffect, useRef } from "react";
 
 import { DashboardProps } from "./Dashboard.types";
-import { embedDashboard } from "./Embedded";
+import { embedDashboard, EmbeddedDashboard } from "./Embedded";
 import { formatNativeFilter } from "./Embedded/NativeFilter";
 
 const Dashboard = ({
@@ -13,11 +13,14 @@ const Dashboard = ({
   dataProvider,
   guestToken,
   nativeFilters,
+  autosize = false,
+  placeholder = false,
   uiConfig = {
     hideTitle: true,
   },
 }: DashboardProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = React.useState(true);
   useEffect(() => {
     if (!ref.current) {
       return;
@@ -42,7 +45,7 @@ const Dashboard = ({
         risonFilters = rison.encode(mergedNativeFilters);
       }
 
-      const config = await embedDashboard({
+      await embedDashboard({
         uuid: uuid,
         supersetDomain: domain,
         mountPoint: ref!.current,
@@ -54,12 +57,50 @@ const Dashboard = ({
             native_filters: risonFilters,
           },
         },
+      }).then(async (dashboard: EmbeddedDashboard) => {
+        if (!autosize) {
+          setLoading(false);
+          ref.current!.style.height = "100%";
+          return;
+        }
+        const { height } = await dashboard.getScrollSize();
+        let lastHeight = height;
+        const interval = setInterval(async () => {
+          const { height, width } = await dashboard.getScrollSize();
+          if (lastHeight === height) {
+            clearInterval(interval);
+            ref.current!.style.height = `${height}px`;
+            setLoading(false);
+          }
+          lastHeight = height;
+        }, 1500);
+
+        return () => {
+          clearInterval(interval);
+          dashboard.unmount();
+        };
       });
-      return;
     })();
   }, [ref.current, uuid]);
 
-  return <div className={`superset-dashboard`} ref={ref} />;
+  return (
+    <>
+      {placeholder !== false && loading === true && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          {placeholder}
+        </div>
+      )}
+      <div className={`superset-dashboard`} ref={ref} style={{ height: 0 }} />
+    </>
+  );
 };
 
 export default Dashboard;

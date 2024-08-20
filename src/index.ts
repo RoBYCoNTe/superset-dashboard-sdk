@@ -1,5 +1,6 @@
 import Dashboard from "./Dashboard/Dashboard";
 import { DataProviderInterface } from "./DataProvider.types";
 import DefaultDataProvider from "./DataProvider";
+import render from "./render";
 
-export { Dashboard, DataProviderInterface, DefaultDataProvider };
+export { render, Dashboard, DataProviderInterface, DefaultDataProvider };

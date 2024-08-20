@@ -5,12 +5,14 @@
   "main": "build/index.js",
   "private": false,
   "module": "build/index.es.js",
+  "iife": "dist/superset-dashboard-sdk.js",
   "files": [
     "build"
   ],
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
+    "build:iife": "rollup -c rollup.config.iife.js",
     "storybook": "start-storybook -p 6006",
     "storybook:export": "build-storybook",
     "test": "jest",

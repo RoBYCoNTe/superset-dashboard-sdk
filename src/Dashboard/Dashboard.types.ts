@@ -3,16 +3,37 @@ import { NativeFilter } from "./Embedded/NativeFilter";
 import { UiConfigType } from "./Embedded";
 
 export type DashboardProps = {
-  /**  The data provider to use for the dashboard. */
+  /**
+   * The data provider to use to fetch data.
+   */
   dataProvider?: DataProviderInterface;
-  /** The uuid of the dashboard to display. */
+  /**
+   * The UUID of the dashboard to embed.
+   */
   uuid: string;
-  /** Superset domain. */
+  /**
+   * The domain of the Superset instance to use.
+   */
   domain: string;
-  /** Superset dashboard config */
+  /**
+   * Superset Dashboard Config
+   */
   uiConfig?: UiConfigType;
-  /** You can provide guest token directly without using dataProvider. */
+  /**
+   * You can provide guest token directly without using dataProvider.
+   */
   guestToken?: string;
-  /** List of filters to apply to the dashboard. */
+  /**
+   * Native filters to apply to the dashboard.
+   */
   nativeFilters?: NativeFilter[];
+  /**
+   * If true, the dashboard will automatically resize to fit its content.
+   * It will always be influenced by the parent container size.
+   */
+  autosize?: boolean;
+  /**
+   * The placeholder to show while the dashboard is loading.
+   */
+  placeholder?: string | boolean;
 };
